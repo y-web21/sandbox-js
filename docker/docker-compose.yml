@@ -1,0 +1,68 @@
+version: '3.9'
+
+x-app-name: &app-name
+  ${APP_NAME}
+
+x-app-home: &app-home
+  /var/www/${APP_NAME}
+
+x-environment: &environment
+  APP_NAME: *app-name
+  TZ: Asia/Tokyo
+
+x-db-environment: &db-environment
+  DB_CONNECTION: mysql
+  DB_HOST: ${DB_CONTAINER_NAME}
+  DB_PORT: 3306
+  MYSQL_DATABASE: *app-name
+  MYSQL_USER: user
+
+volumes:
+  dbdata:
+    name: ${DB_CONTAINER_NAME}
+    # external: true
+  dblog:
+    name: ${DB_CONTAINER_NAME}_log
+
+services:
+  php:
+    container_name: ${APP_CONTAINER_NAME}
+    build:
+        context: ./php/
+    environment:
+      <<: [*environment, *db-environment]
+      APP_HOME: *app-home
+    env_file:
+      - ./php/shell.env
+      - ./dbpass.env
+    working_dir: *app-home
+
+  nginx:
+    image: nginx:stable
+    container_name: ${WEB_CONTAINER_NAME}
+    environment: *environment
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    working_dir: /etc/nginx/
+    depends_on:
+      - php
+
+  db:
+    container_name: ${DB_CONTAINER_NAME}
+    build:
+        context: ./mysql/
+    environment:
+      <<: [*environment, *db-environment]
+      MYSQL_PS1: '[\U]  \r:\m \P [\d] \n> '
+      HOME: /root
+    env_file:
+      - ./dbpass.env
+      - ./mysql/.env
+    volumes:
+      - type: volume
+        source: dbdata
+        target: /var/lib/mysql
+      - type: volume
+        source: dblog
+        target: /var/log/mysql

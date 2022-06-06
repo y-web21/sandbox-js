@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `js-sandbox`;
+CREATE DATABASE IF NOT EXISTS `js-sandbox_testing`;
