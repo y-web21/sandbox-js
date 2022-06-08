@@ -12,5 +12,8 @@
   "repository": {
     "type": "git"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.27.10"
+  }
 }
