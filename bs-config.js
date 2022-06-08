@@ -16,7 +16,11 @@ module.exports = {
   "ui": {
     "port": 3001
   },
-  "files": false,
+  "files": [
+    "./css/**/*.css",
+    "./js/**/*.js",
+    "./**/*.html"
+  ],
   "watchEvents": [
     "change"
   ],
@@ -26,7 +30,9 @@ module.exports = {
   "watchOptions": {
     "ignoreInitial": true
   },
-  "server": false,
+  "server": [
+    "./docs/"
+  ],
   "proxy": false,
   "port": 3000,
   "middleware": false,
@@ -47,7 +53,7 @@ module.exports = {
   "logFileChanges": true,
   "logSnippet": true,
   "rewriteRules": [],
-  "open": "local",
+  "open": false,
   "browser": "default",
   "cors": false,
   "xip": false,
