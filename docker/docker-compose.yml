@@ -4,7 +4,7 @@ x-app-name: &app-name
   ${APP_NAME}
 
 x-app-home: &app-home
-  /var/www/${APP_NAME}
+  /var/www/app
 
 x-environment: &environment
   APP_NAME: *app-name

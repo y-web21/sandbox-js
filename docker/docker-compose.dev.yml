@@ -15,7 +15,7 @@ services:
       - "3001:3001"
     volumes:
       - type: bind
-        source: ../app
+        source: ../docs
         target: /var/www/app
 
   nginx:
@@ -23,5 +23,5 @@ services:
       - "50080:80"
     volumes:
       - type: bind
-        source: ../app
+        source: ../docs
         target: /var/www/app
