@@ -1,5 +1,7 @@
 // @ts-check
 
+import "../scss/style.scss";
+
 /** @type {HTMLInputElement} */
 const uri_input = document.getElementById('plainURIinput');
 /** @type {HTMLInputElement} */

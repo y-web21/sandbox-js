@@ -11,5 +11,17 @@ module.exports = {
     path: path.resolve(__dirname, 'docs/js/'),
     filename: "./main.js",
     clean: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+    ]
   }
 }
