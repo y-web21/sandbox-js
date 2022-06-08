@@ -23,3 +23,5 @@ storage/*.key
 *.vsix
 
 *.bak
+*__draft__*
+

@@ -45,3 +45,61 @@ npm run live
 ### reference
 
 [Browsersync options](https://browsersync.io/docs/options)
+
+
+## webpack
+
+[Concepts \| webpack](https://webpack.js.org/concepts/)
+
+[Command Line Interface \| webpack](https://webpack.js.org/api/cli/)
+
+### bundle
+
+オブジェクトで渡すと個別に。配列で渡すと一つのファイルとなる。
+
+```js
+module.exports = {
+  entry: {
+    main: "./src/js/main.js",
+    test: "./src/js/test.js",
+  },
+  // [name] にはもともとの名前が入る。
+  output: {
+    path: path.resolve(__dirname, 'docs/js/'),
+    filename: "./[name].bundle.js",
+  }
+}
+```
+
+```js
+module.exports = {
+  mode: 'none',
+  entry: [
+    "./src/js/main.js",
+    "./src/js/test.js"
+  ],
+  output: {
+    path: path.resolve(__dirname, 'docs/js/'),
+    filename: "./bundle.js",
+  }
+}
+```
+### 必要に応じて、 mode を使い分ける。
+
+`production` or `development` or `none`
+
+```js
+// webpack.config.prod.js
+module.exports = {
+  mode: 'production',
+  ...
+}
+```
+
+```js
+  // package.json
+  "scripts": {
+    "webpack": "webpack --config webpack.config.prod.js"
+  },
+```
+

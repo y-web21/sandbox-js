@@ -1,7 +1,3 @@
-/******/ (() => { // webpackBootstrap
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
-(() => {
 // @ts-check
 
 /** @type {HTMLInputElement} */
@@ -21,16 +17,3 @@ uri_input.addEventListener("input", () => {
 uri_encoded_input.addEventListener("input", () => {
   document.getElementById('decodeURI').textContent = decodeURI(uri_encoded_input.value)
 })
-
-})();
-
-// This entry need to be wrapped in an IIFE because it need to be isolated against other entry modules.
-(() => {
-// @ts-check
-
-document.getElementsByTagName('h2')[0].style.background = '#828'
-
-})();
-
-/******/ })()
-;
