@@ -96,10 +96,37 @@ module.exports = {
 }
 ```
 
+公開用には向かないオプションも多いため、予め `dev`, `prod` で `webpack.config.js` は分けておいたほうが良いだろう。 
+
 ```js
   // package.json
   "scripts": {
     "webpack": "webpack --config webpack.config.prod.js"
   },
+```
+
+### source map を利用する
+
+エラー時に、バンドル前のエラー箇所がわかるようにする。
+
+```js
+// webpack.config.js
+  output: {
+    path: path.resolve(__dirname, 'docs/js/'),
+    filename: "./main.js",
+  }
+  ...
+  devtool: 'inline-source-map'
+```
+
+DevTools の Console のエラーを確認すると、バンドル前のソースファイルでエラー箇所が表示される。
+
+`main.js` じゃないファイル名であることが確認できる。
+
+```
+test.js:3 Uncaught TypeError: document.getElementsByYourLifePolicy is not a function
+    at test.js:3:1
+    at test.js:3:1
+    at test.js:3:1
 ```
 
