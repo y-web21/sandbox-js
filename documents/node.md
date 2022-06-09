@@ -82,9 +82,13 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'docs/js/'),
     filename: "./[name].bundle.js",
+    clean: true, // 出力前に path: ディレクトリをクリーンにする
   }
 }
 ```
+
+[Template strings](https://webpack.js.org/configuration/output/#template-strings) によると [id],[name],[chunkhash],[contenthash]が使えるようだ。
+
 
 ```js
 module.exports = {
@@ -104,21 +108,32 @@ module.exports = {
 `production` or `development` or `none`
 
 ```js
-// webpack.config.prod.js
+// :webpack.prod.js
 module.exports = {
   mode: 'production',
   ...
 }
 ```
 
-公開用には向かないオプションも多いため、予め `dev`, `prod` で `webpack.config.js` は分けておいたほうが良いだろう。 
+公開用には向かないオプションも多いため、予め `dev`, `prod` で `webpack.config.js` は分けておいたほうが良いだろう。
 
 ```js
-  // package.json
+  // :package.json
   "scripts": {
-    "webpack": "webpack --config webpack.config.prod.js"
+    // ...
+    "webpack": "webpack --config webpack.prod.js"
   },
 ```
+
+`NODE_ENV` によって切り分けて1つのファイルで管理する構造でも問題ない。管理するファイルが減るメリットが有る。
+
+```js
+// : webpack.config.js
+    process.env.NODE_ENV === "production"
+    ? "style-loader"
+    : MiniCssExtractPlugin.loader,
+```
+
 
 ### source map を利用する
 
@@ -191,3 +206,76 @@ npm i -D sass-loader css-loader style-loader
 ```js
 import '../scss/style.scss';
 ```
+
+- [webpack-contrib/css-loader: CSS Loader](https://github.com/webpack-contrib/css-loader)
+    - The css-loader interprets @import and url() like import/require() and will resolve them.
+    - CSS を js に import する。
+- [webpack-contrib/style-loader: Style Loader](https://github.com/webpack-contrib/style-loader)
+  - Inject CSS into the DOM.
+  - js にある css を DOM に割り当てる。
+  - [style-loader \| webpack](https://webpack.js.org/loaders/style-loader/)
+
+#### mini-css-extract-plugin で CSS を別ファイルに出力する
+
+```bash
+npm i -D mini-css-extract-plugin
+```
+
+```js
+// :webpack.dev.js
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,  // "style-loader" から置き換える
+          "css-loader",
+          "sass-loader",
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "../css/style.css", // output: { path: を起点としたパス
+    }),
+  ],
+}
+```
+
+
+### webpack-dev-server を使用する
+
+独自のライブリロードつきWebサーバーがある模様。
+
+```bash
+npm install --save-dev webpack-dev-server
+```
+
+以下を追加。
+
+```js
+// :webpack.config.js
+  // ...
+  devServer: {
+    static: './dist',
+  },
+  // ...
+  optimization: {
+    runtimeChunk: 'single',
+  },
+```
+
+serve
+
+```bash
+npx webpack serve --open
+```
+
+[Using webpack-dev-server \| webpack](https://webpack.js.org/guides/development/#using-webpack-dev-server)
+
+[DevServer](https://webpack.js.org/configuration/dev-server)
