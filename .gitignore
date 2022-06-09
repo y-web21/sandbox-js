@@ -25,3 +25,5 @@ storage/*.key
 *.bak
 *__draft__*
 
+# dev
+docs/css/
